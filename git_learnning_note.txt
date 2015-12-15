@@ -1,0 +1,23 @@
+《git学习笔记》
+
+1.安装git后，进行下列配置
+	$ git config --global user.name "Your Name"
+	$ git config --global user.email "email@example.com"
+	
+2.创建版本库
+   
+	（1）指定版本库所在位置
+		 $ mkdir learngit
+		 $ cd learngit
+		 $ pwd
+		 /Users/michael/learngit
+	（2）版本库初始化，变成可管理的仓库 命令：git init
+		 $ git init
+		 Initialized empty Git repository in /Users/michael/learngit/.git/
+
+3.把文件添加到版本库（文件必须放在版本库所在文件目录下）
+	（1）使用git add把文件添加到仓库（可以一次add多个文件）
+		 $ git add readme.txt
+	（2）使用git commit把文件提交到仓库
+		 $ git commit -m "wrote a readme file"
+	
