@@ -9,15 +9,19 @@
 	（1）指定版本库所在位置
 		 $ mkdir learngit
 		 $ cd learngit
-		 $ pwd
+		 $ pwd   //pwd命令用来查看仓库位置
 		 /Users/michael/learngit
 	（2）版本库初始化，变成可管理的仓库 命令：git init
 		 $ git init
 		 Initialized empty Git repository in /Users/michael/learngit/.git/
 
-3.把文件添加到版本库（文件必须放在版本库所在文件目录下）
+3.把文件提交到仓库（文件必须放在版本库所在文件目录下）
 	（1）使用git add把文件添加到仓库（可以一次add多个文件）
 		 $ git add readme.txt
 	（2）使用git commit把文件提交到仓库
 		 $ git commit -m "wrote a readme file"
+		 
+3.仓库状态
+	（1）查看当前仓库状态 git status
+	（2）查看不同，即修改了什么 git diff
 	
