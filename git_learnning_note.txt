@@ -37,7 +37,8 @@
 6.撤销修改
 	（1）场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
 
-	（2）当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
+	（2）当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，
+	 分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
 
 	（3）已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
 	
@@ -45,3 +46,25 @@
 	（1）删除工作区文件，用命令 rm filename  如：rm test.txt
 	（2）彻底删除文件<包括工作区和仓库中的>，先删除 git rm filename,再提交删除 git commit -m "delete reasion"
 	（3）恢复删除文件，若文件未从版本库中删除，可使用 git checkout -- filename 恢复到最新版本。
+	
+8.远程仓库
+	（1）创建SSH key;  输入下面的命令后一直回车即可，成功后用户主目录会生成.ssh目录，包含id_rsa和id_rsa.pub两个文件，
+	 这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+	 
+		$ ssh-keygen -t rsa -C "youremail@example.com"
+		
+	（2）登陆GitHub，打开“Account settings”，“SSH Keys”页面，点击“Add SSH Key”,填上任意Title,在Key文本框里粘贴id_rsa.pub文件的内容,
+	最后点提交即可看见已经添加的Key;
+	
+9.添加远程库
+	（1）首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库
+	（2）在Repository name填入本地仓库名（例如：workplace），其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库
+	（3）运行下面的命令，关联本地仓库
+		$ git remote add origin git@github.com:yourname/workplace.git
+	（4）关联后通过命令git push -u origin master第一次推送master分支的所有内容；
+	（5）以后再提交，只需要使用git push origin master推送最新修改即可；
+	
+10.从远程仓库克隆
+	（1）必须先有一个远程库，且你的电脑在远程仓库列表中
+	（2）使用命令git clone git@github.com:hehota/workplace.git
+	（3）Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快
