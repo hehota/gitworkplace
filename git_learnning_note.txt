@@ -79,4 +79,4 @@
 	（5）合并某分支到当前分支：git merge <name>
 	（6）删除分支：git branch -d <name>
 	
-测试分支冲突提交   test new branch & conflict
+测试分支冲突提交   test good branch ^ conflict
