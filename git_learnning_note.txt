@@ -77,9 +77,113 @@
 	（3）切换分支：git checkout <name>
 	（4）创建+切换分支：git checkout -b <name>
 	（5）合并某分支到当前分支：git merge <name>
-	（6）删除分支：git branch -d <name>
+	（6）删除分支：git branch -d <name>      强行删除：git branch -D <name>
 	
 13.解决冲突
 	（1）当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
 
 	（2）用git log --graph命令可以看到分支合并图。
+	
+14.分支管理策略
+	合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
+	
+15.Bug分支
+	（1）修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；（在修复哪个分支上的bug，即在哪个分支上再建立新的bug分支）
+
+	（2）当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场。
+	
+16.Feature分支
+	（1）开发一个新feature，最好新建一个分支；
+
+	（2）如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+	
+17.多人协作
+	（1）查看远程库信息，使用git remote -v；
+
+	（2）本地新建的分支如果不推送到远程，对其他人就是不可见的；
+
+	（3）从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+
+	（4）在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+
+	（5）建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；（当本地在分支上工作，要推送到远程的分支上时）
+
+	（6）从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+	
+18.标签管理 （标签即唯一标识，用来对发布版本时的版本库作标记）
+
+19.创建标签
+	（1）命令git tag <name>用于新建一个标签，默认为HEAD，也可以指定一个commit id；
+
+	（2）git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+
+	（3）git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；
+
+	（4）命令git tag可以查看所有标签。
+	
+20.操作标签
+	（1）命令git push origin <tagname>可以推送一个本地标签；
+
+	（2）命令git push origin --tags可以推送全部未推送过的本地标签；
+
+	（3）命令git tag -d <tagname>可以删除一个本地标签；
+
+	（4）命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
+	
+21.使用GitHub
+	（1）在GitHub上，可以任意Fork开源仓库；
+
+	（2）自己拥有Fork后的仓库的读写权限；
+
+	（3）可以推送pull request给官方仓库来贡献代码。
+	
+22.自定义git
+		让Git显示颜色，会让命令输出看起来更醒目    git config --global color.ui true
+		
+23.忽略特殊文件
+	（1）忽略某些文件时，需要编写.gitignore；
+	     配置文件在线浏览地址：https://github.com/github/gitignore
+
+	（2）.gitignore文件本身要放到版本库里，并且可以对.gitignore做版本管理！
+	
+24.配置别名
+	例：git config --global alias.st status       给status设置别名为st
+	
+	（1）配置Git的时候，加上--global是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用
+	（2）每个仓库的Git配置文件都放在.git/config文件中
+	（3）别名就在[alias]后面，要删除别名，直接把对应的行删掉即可。
+	（4）而当前用户的Git配置文件放在用户主目录下的一个隐藏文件.gitconfig中
+	
+25.搭建Git服务器
+	（1）准备工作：一台Linux机器（推荐Ubuntu或Debian）
+	
+	（2）安装git
+		sudo apt-get install git
+		
+	（3）创建git用户
+		sudo adduser git
+		
+	（4）创建证书登录
+		收集所有需要登录用户的公钥（即id_rsa.pub文件），导入到/home/git/.ssh/authorized_keys文件中，一行一个
+		
+	（5）初始化Git仓库
+		选定一个目录作为Git仓库
+		例：sudo git init --bare sample.git    在/srv目录下建立名字为sample的仓库
+		
+		Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以
+		不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾。
+		然后，把owner改为git
+		例：sudo chown -R git:git sample.git
+		
+	（6）禁用shell登录
+		这可以通过编辑/etc/passwd文件完成，
+		找到类似下面的一行：
+		git:x:1001:1001:,,,:/home/git:/bin/bash
+		改为：
+		git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+		
+	（7）克隆远程仓库
+		例：git clone git@server:/srv/sample.git
+		
+	（8）要方便管理公钥，用Gitosis；
+		 要像SVN那样变态地控制权限，用Gitolite。
